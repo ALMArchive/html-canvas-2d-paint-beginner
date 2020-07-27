@@ -104,6 +104,18 @@ function strokeArc(canvasRenderingContext, x, y, radius, startAngle, endAngle, c
     strokeEllipse(canvasRenderingContext, x, y, radius, radius, 0, startAngle, endAngle, counterclock);
 }
 
+// draws a filled circle at point x, y defined by the provided parameters to the provided rendering context
+function fillCircle(canvasRenderingContext, x, y, radius) {
+    if(!canvasRenderingContext) return;
+    fillArc(canvasRenderingContext, x, y, radius, 0, 360);
+}
+
+// draws a stroked circle at point x, y defined by the provided parameters to the provided rendering context
+function strokeCircle(canvasRenderingContext, x, y, radius) {
+    if(!canvasRenderingContext) return;
+    strokeArc(canvasRenderingContext, x, y, radius, 0, 360);
+}
+
 /*
     Application Code
  */
@@ -152,4 +164,7 @@ if (canvasElement.getContext) {
 
     fillArc(canvasRenderingContext, 500, 600, 20, 0, 360);
     strokeArc(canvasRenderingContext, 500, 600, 20, 180, 0);
+
+    fillCircle(canvasRenderingContext, 400, 400, 10);
+    strokeCircle(canvasRenderingContext, 400, 400, 10);
 }
