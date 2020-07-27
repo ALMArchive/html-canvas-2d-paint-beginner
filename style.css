@@ -1,0 +1,22 @@
+html, body, .paint-container {
+    height: 100%;
+    background-color: #3b4147;
+}
+
+.paint-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+:root * {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.paint-canvas {
+    background-color: white;
+    height: 720px;
+    width: 1280px;
+}
