@@ -38,6 +38,10 @@ function strokeRect(ctx, x, y, w, h) {
     ctx.strokeRect(x, y, w, h);
 }
 
+function drawPixel(ctx, x, y) {
+    fillRect(ctx, x, y, 1, 1);
+}
+
 const canvas = document.getElementById('paint-canvas');
 
 const width = pixelStringToNumber(window.getComputedStyle(canvas).width);
@@ -53,4 +57,12 @@ if (canvas.getContext) {
 
     setFillStyle(ctx, 0, 0, 200, 0.5);
     strokeRect(ctx,30, 30, 50, 50);
+
+    drawPixel(ctx, 500, 500);
+
+    for(let i = 0; i < width; i += 5) {
+        for(let j = 0; j < height; j += 5) {
+            drawPixel(ctx, i, j);
+        }
+    }
 }
