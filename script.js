@@ -116,6 +116,16 @@ function strokeCircle(canvasRenderingContext, x, y, radius) {
     strokeArc(canvasRenderingContext, x, y, radius, 0, 360);
 }
 
+// draws a line from x1, y1 to x2, y2 of a specified width to the provided rendering context
+function drawLine(canvasRenderingContext, x1, y1, x2, y2, width = 1) {
+    if(!canvasRenderingContext) return;
+    canvasRenderingContext.beginPath();
+    canvasRenderingContext.moveTo(x1, y1);
+    canvasRenderingContext.lineTo(x2, y2);
+    canvasRenderingContext.lineWidth = width;
+    canvasRenderingContext.stroke();
+}
+
 /*
     Application Code
  */
@@ -167,4 +177,7 @@ if (canvasElement.getContext) {
 
     fillCircle(canvasRenderingContext, 400, 400, 10);
     strokeCircle(canvasRenderingContext, 400, 400, 10);
+
+    drawLine(canvasRenderingContext, 0, 0, width, height);
+    drawLine(canvasRenderingContext, width, 0, 0, height, 20);
 }
