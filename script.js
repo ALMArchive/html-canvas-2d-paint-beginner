@@ -56,6 +56,13 @@ function drawPixel(canvasRenderingContext, x, y) {
     fillRect(canvasRenderingContext, x, y, 1, 1);
 }
 
+// clears a rectangular region at point x, y, with dimensions width and height
+// from the provided rendering context
+function clearRect(canvasRenderingContext, x, y, w, h) {
+    if(!canvasRenderingContext) return;
+    canvasRenderingContext.clearRect(x, y, w, h);
+}
+
 /*
     Application Code
  */
@@ -79,7 +86,7 @@ if (canvasElement.getContext) {
     fillRect(canvasRenderingContext,10, 10, 50, 50);
 
     setFillStyle(canvasRenderingContext, 0, 0, 200, 0.5);
-    strokeRect(canvasRenderingContext,30, 30, 50, 50);
+    fillRect(canvasRenderingContext,30, 30, 50, 50);
 
     drawPixel(canvasRenderingContext, 500, 500);
 
@@ -88,4 +95,8 @@ if (canvasElement.getContext) {
             drawPixel(canvasRenderingContext, i, j);
         }
     }
+
+    setStrokeStyle(canvasRenderingContext, 255, 0 , 0);
+    strokeRect(canvasRenderingContext, 500, 500, 50, 50);
+    clearRect(canvasRenderingContext, 100, 300, 250, 400);
 }
