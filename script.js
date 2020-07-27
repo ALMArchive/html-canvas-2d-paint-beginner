@@ -2,17 +2,22 @@
     Utility Functions
  */
 
-// Converts a string in the form '12px' to an integer
+// converts a string in the form '12px' to an integer
 function pixelStringToNumber(num) {
     if(!num) return;
     return parseInt(num.replace('px', ''));
 }
 
-// Resizes a canvas element to the provided width/height
+// resizes a canvas element to the provided width/height
 function resizeCanvas(canvasElement, width, height) {
     if(!canvasElement || !width || !height) return;
     canvasElement.width = width;
     canvasElement.height = height;
+}
+
+// convert from degrees to radians
+function deg2rad(degrees) {
+    return degrees * Math.PI / 180;
 }
 
 /*
@@ -64,8 +69,29 @@ function clearRect(canvasRenderingContext, x, y, w, h) {
 }
 
 // clears a single pixel at point x, y from the provided rendering context
-function clearPixel(ctx, x, y) {
-    clearRect(ctx, x, y, 1, 1);
+function clearPixel(canvasRenderingContext, x, y) {
+    clearRect(canvasRenderingContext, x, y, 1, 1);
+}
+
+// ellipse helper function that draws the ellipse path to the rendering context but defers it's fill style
+function _pathEllipse(canvasRenderingContext, x, y, radiusx, radiusy, rotation, startAngle, endAngle, counterclock = false) {
+    if(!canvasRenderingContext) return;
+    canvasRenderingContext.beginPath();
+    canvasRenderingContext.ellipse(x, y, radiusx, radiusy, rotation, startAngle, endAngle, counterclock);
+}
+
+// draws a filled ellipse at point x, y defined by the provided parameters to the provided rendering context
+function fillEllipse(canvasRenderingContext, x, y, radiusx, radiusy, rotation, startAngle, endAngle, counterclock = false) {
+    if(!canvasRenderingContext) return;
+    _pathEllipse(canvasRenderingContext, x, y, radiusx, radiusy, deg2rad(rotation), deg2rad(startAngle), deg2rad(endAngle), counterclock);
+    canvasRenderingContext.fill();
+}
+
+// draws a filled ellipse at point x, y defined by the provided parameters to the provided rendering context
+function strokeEllipse(canvasRenderingContext, x, y, radiusx, radiusy, rotation, startAngle, endAngle, counterclock = false) {
+    if(!canvasRenderingContext) return;
+    _pathEllipse(canvasRenderingContext, x, y, radiusx, radiusy, deg2rad(rotation), deg2rad(startAngle), deg2rad(endAngle), counterclock);
+    canvasRenderingContext.stroke();
 }
 
 /*
@@ -110,4 +136,7 @@ if (canvasElement.getContext) {
             clearPixel(canvasRenderingContext, i, j);
         }
     }
+
+    fillEllipse(canvasRenderingContext, 300, 300, 100, 300, 100, 0, 360);
+    strokeEllipse(canvasRenderingContext, 500, 300, 300, 100, 100, 0, 360);
 }
