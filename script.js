@@ -25,6 +25,19 @@ function setStrokeStyle(ctx, r, g, b, a = 1.0) {
     ctx.strokeStyle = `rgba(${r}, ${g}, ${b}, ${a})`;
 }
 
+/*
+    Drawing Functions
+ */
+function fillRect(ctx, x, y, w, h) {
+    if(!ctx) return;
+    ctx.fillRect(x, y, w, h);
+}
+
+function strokeRect(ctx, x, y, w, h) {
+    if(!ctx) return;
+    ctx.strokeRect(x, y, w, h);
+}
+
 const canvas = document.getElementById('paint-canvas');
 
 const width = pixelStringToNumber(window.getComputedStyle(canvas).width);
@@ -36,8 +49,8 @@ if (canvas.getContext) {
     const ctx = canvas.getContext('2d');
 
     setFillStyle(ctx, 200, 0, 0);
-    ctx.fillRect(10, 10, 50, 50);
+    fillRect(ctx,10, 10, 50, 50);
 
     setFillStyle(ctx, 0, 0, 200, 0.5);
-    ctx.fillRect(30, 30, 50, 50);
+    strokeRect(ctx,30, 30, 50, 50);
 }
