@@ -1,10 +1,24 @@
+/*
+    Utility Functions
+ */
+// utils
+function pixelStringToNumber(num) {
+    if(!num) return;
+    return parseInt(num.replace('px', ''));
+}
+
+function resizeCanvas(canvas, width, height) {
+    if(!canvas || !width || !height) return;
+    canvas.width = width;
+    canvas.height = height;
+}
+
 const canvas = document.getElementById('paint-canvas');
 
-const width = window.getComputedStyle(canvas).width;
-const height = window.getComputedStyle(canvas).height;
+const width = pixelStringToNumber(window.getComputedStyle(canvas).width);
+const height = pixelStringToNumber(window.getComputedStyle(canvas).height);
 
-canvas.width = width.replace('px', '');
-canvas.height = height.replace('px', '');
+resizeCanvas(canvas, width, height);
 
 if (canvas.getContext) {
     const ctx = canvas.getContext('2d');
