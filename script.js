@@ -87,11 +87,21 @@ function fillEllipse(canvasRenderingContext, x, y, radiusx, radiusy, rotation, s
     canvasRenderingContext.fill();
 }
 
-// draws a filled ellipse at point x, y defined by the provided parameters to the provided rendering context
+// draws a stroked ellipse at point x, y defined by the provided parameters to the provided rendering context
 function strokeEllipse(canvasRenderingContext, x, y, radiusx, radiusy, rotation, startAngle, endAngle, counterclock = false) {
     if(!canvasRenderingContext) return;
     _pathEllipse(canvasRenderingContext, x, y, radiusx, radiusy, deg2rad(rotation), deg2rad(startAngle), deg2rad(endAngle), counterclock);
     canvasRenderingContext.stroke();
+}
+
+// draws a filled arc at point x, y defined by the provided parameters to the provided rendering context
+function fillArc(canvasRenderingContext, x, y, radius, startAngle, endAngle, counterclock = false) {
+    fillEllipse(canvasRenderingContext, x, y, radius, radius, 0, startAngle, endAngle, counterclock);
+}
+
+// draws a stroked arc at point x, y defined by the provided parameters to the provided rendering context
+function strokeArc(canvasRenderingContext, x, y, radius, startAngle, endAngle, counterclock = false) {
+    strokeEllipse(canvasRenderingContext, x, y, radius, radius, 0, startAngle, endAngle, counterclock);
 }
 
 /*
@@ -139,4 +149,7 @@ if (canvasElement.getContext) {
 
     fillEllipse(canvasRenderingContext, 300, 300, 100, 300, 100, 0, 360);
     strokeEllipse(canvasRenderingContext, 500, 300, 300, 100, 100, 0, 360);
+
+    fillArc(canvasRenderingContext, 500, 600, 20, 0, 360);
+    strokeArc(canvasRenderingContext, 500, 600, 20, 180, 0);
 }
