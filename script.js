@@ -1,68 +1,91 @@
 /*
     Utility Functions
  */
+
+// Converts a string in the form '12px' to an integer
 function pixelStringToNumber(num) {
     if(!num) return;
     return parseInt(num.replace('px', ''));
 }
 
-function resizeCanvas(canvas, width, height) {
-    if(!canvas || !width || !height) return;
-    canvas.width = width;
-    canvas.height = height;
+// Resizes a canvas element to the provided width/height
+function resizeCanvas(canvasElement, width, height) {
+    if(!canvasElement || !width || !height) return;
+    canvasElement.width = width;
+    canvasElement.height = height;
 }
 
 /*
     Style Functions
  */
-function setFillStyle(ctx, r, g, b, a = 1.0) {
-    if(!ctx) return;
-    ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${a})`;
+
+// sets the fill style of a given canvas rendering context to the color
+// represented by the provided rgba values
+function setFillStyle(canvasRenderingContext, r, g, b, a = 1.0) {
+    if(!canvasRenderingContext) return;
+    canvasRenderingContext.fillStyle = `rgba(${r}, ${g}, ${b}, ${a})`;
 }
 
-function setStrokeStyle(ctx, r, g, b, a = 1.0) {
-    if(!ctx) return;
-    ctx.strokeStyle = `rgba(${r}, ${g}, ${b}, ${a})`;
+// sets the stroke style of a given canvas rendering context to the color
+// represented by the provided rgba values
+function setStrokeStyle(canvasRenderingContext, r, g, b, a = 1.0) {
+    if(!canvasRenderingContext) return;
+    canvasRenderingContext.strokeStyle = `rgba(${r}, ${g}, ${b}, ${a})`;
 }
 
 /*
     Drawing Functions
  */
-function fillRect(ctx, x, y, w, h) {
-    if(!ctx) return;
-    ctx.fillRect(x, y, w, h);
+
+// draws a filled rectangle at point x, y, with dimensions width and height
+// to the provided rendering context
+function fillRect(canvasRenderingContext, x, y, width, height) {
+    if(!canvasRenderingContext) return;
+    canvasRenderingContext.fillRect(x, y, width, height);
 }
 
-function strokeRect(ctx, x, y, w, h) {
-    if(!ctx) return;
-    ctx.strokeRect(x, y, w, h);
+// draws a stroked rectangle at point x, y, with dimensions width and height
+// to the provided rendering context
+function strokeRect(canvasRenderingContext, x, y, width, height) {
+    if(!canvasRenderingContext) return;
+    canvasRenderingContext.strokeRect(x, y, width, height);
 }
 
-function drawPixel(ctx, x, y) {
-    fillRect(ctx, x, y, 1, 1);
+// draws a single pixel at point x, y to the provided rendering context
+function drawPixel(canvasRenderingContext, x, y) {
+    fillRect(canvasRenderingContext, x, y, 1, 1);
 }
 
-const canvas = document.getElementById('paint-canvas');
+/*
+    Application Code
+ */
 
-const width = pixelStringToNumber(window.getComputedStyle(canvas).width);
-const height = pixelStringToNumber(window.getComputedStyle(canvas).height);
+// reference to the canvas html element
+const canvasElement = document.getElementById('paint-canvas');
 
-resizeCanvas(canvas, width, height);
+// computed width of the canvas html element based on the css
+const width = pixelStringToNumber(window.getComputedStyle(canvasElement).width);
 
-if (canvas.getContext) {
-    const ctx = canvas.getContext('2d');
+// computed height of the canvas html element based on the css
+const height = pixelStringToNumber(window.getComputedStyle(canvasElement).height);
 
-    setFillStyle(ctx, 200, 0, 0);
-    fillRect(ctx,10, 10, 50, 50);
+// resize the canvas drawing surface to the elements computed size
+resizeCanvas(canvasElement, width, height);
 
-    setFillStyle(ctx, 0, 0, 200, 0.5);
-    strokeRect(ctx,30, 30, 50, 50);
+if (canvasElement.getContext) {
+    const canvasRenderingContext = canvasElement.getContext('2d');
 
-    drawPixel(ctx, 500, 500);
+    setFillStyle(canvasRenderingContext, 200, 0, 0);
+    fillRect(canvasRenderingContext,10, 10, 50, 50);
+
+    setFillStyle(canvasRenderingContext, 0, 0, 200, 0.5);
+    strokeRect(canvasRenderingContext,30, 30, 50, 50);
+
+    drawPixel(canvasRenderingContext, 500, 500);
 
     for(let i = 0; i < width; i += 5) {
         for(let j = 0; j < height; j += 5) {
-            drawPixel(ctx, i, j);
+            drawPixel(canvasRenderingContext, i, j);
         }
     }
 }
