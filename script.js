@@ -63,6 +63,11 @@ function clearRect(canvasRenderingContext, x, y, w, h) {
     canvasRenderingContext.clearRect(x, y, w, h);
 }
 
+// clears a single pixel at point x, y from the provided rendering context
+function clearPixel(ctx, x, y) {
+    clearRect(ctx, x, y, 1, 1);
+}
+
 /*
     Application Code
  */
@@ -99,4 +104,10 @@ if (canvasElement.getContext) {
     setStrokeStyle(canvasRenderingContext, 255, 0 , 0);
     strokeRect(canvasRenderingContext, 500, 500, 50, 50);
     clearRect(canvasRenderingContext, 100, 300, 250, 400);
+
+    for(let i = width / 2; i < width; i += 15) {
+        for(let j = 0; j < height; j += 5) {
+            clearPixel(canvasRenderingContext, i, j);
+        }
+    }
 }
