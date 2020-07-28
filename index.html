@@ -10,7 +10,14 @@
         <canvas class="paint-canvas" id="paint-canvas"></canvas>
         <div class="tool-bar">
             <div class="tool-bar-row">
-
+                <div class="color-picker-display" id="color-picker-display">
+                    <div class="color-picker-panel color-picker-panel-offset invisible" id="color-picker-panel">
+                        <div class="color-viewer" id="color-viewer"></div>
+                        <input type="range" min="0" max="255" value="255" class="color-slider red" id="red">
+                        <input type="range" min="0" max="255" value="255" class="color-slider green" id="green">
+                        <input type="range" min="0" max="255" value="255" class="color-slider blue" id="blue">
+                    </div>
+                </div>
             </div>
         </div>
     </div>
