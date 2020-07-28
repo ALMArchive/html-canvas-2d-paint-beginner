@@ -19,6 +19,45 @@
                     </div>
                 </div>
             </div>
+            <div class="tool-bar-row">
+                <div class="draw-action" id="rect-action">Rect</div>
+                <div class="draw-action" id="pencil-action">Pencil</div>
+                <div class="draw-action" id="brush-action">Brush</div>
+                <div class="draw-action" id="eraser-action">Eraser</div>
+                <div class="draw-action" id="cleararea-action">Clear Area</div>
+                <div class="draw-action" id="line-action">Line</div>
+                <div class="draw-action" id="ellipse-action">Ellipse</div>
+                <div class="draw-action" id="arc-action">Arc</div>
+                <div class="draw-action" id="circle-action">Circle</div>
+            </div>
+            <div class="tool-bar-row placeholder" id="placeholder">
+                <input type="text">
+            </div>
+            <div class="tool-bar-row hidden" id="rect-options">
+                <input type="text" name="rect-height" id="rect-height" placeholder="height" minlength="1" maxlength="3" size="8">
+                <input type="text" name="rect-width" id="rect-width" placeholder="width" minlength="1" maxlength="3" size="8">
+            </div>
+            <div class="tool-bar-row hidden" id="brush-options">
+                <input type="text" name="brush-size" id="brush-size" placeholder="size" minlength="1" maxlength="3" size="8">
+            </div>
+            <div class="tool-bar-row hidden" id="line-options">
+                <input type="text" name="line-width" id="line-width" placeholder="width" minlength="1" maxlength="3" size="8">
+            </div>
+            <div class="tool-bar-row hidden" id="ellipse-options">
+                <input type="text" name="ellipse-xradius" id="ellipse-xradius" placeholder="xradius" minlength="1" maxlength="3" size="8">
+                <input type="text" name="ellipse-yradius" id="ellipse-yradius" placeholder="yradius" minlength="1" maxlength="3" size="8">
+                <input type="text" name="ellipse-rotation" id="ellipse-rotation" placeholder="rotation" minlength="1" maxlength="3" size="8">
+                <input type="text" name="ellipse-startangle" id="ellipse-startangle" placeholder="startangle" minlength="1" maxlength="3" size="8">
+                <input type="text" name="ellipse-endangle" id="ellipse-endangle" placeholder="endangle" minlength="1" maxlength="3" size="8">
+            </div>
+            <div class="tool-bar-row hidden" id="arc-options">
+                <input type="text" name="arc-radius" id="arc-radius" placeholder="radius" minlength="1" maxlength="3" size="8">
+                <input type="text" name="arc-startangle" id="arc-startangle" placeholder="startangle" minlength="1" maxlength="3" size="8">
+                <input type="text" name="arc-endangle" id="arc-endangle" placeholder="endangle" minlength="1" maxlength="3" size="8">
+            </div>
+            <div class="tool-bar-row hidden" id="circle-options">
+                <input type="text" name="circle-radius" id="circle-radius" placeholder="radius" minlength="1" maxlength="3" size="8">
+            </div>
         </div>
     </div>
     <script type="application/javascript" src="script.js"></script>

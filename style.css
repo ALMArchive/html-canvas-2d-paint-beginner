@@ -10,6 +10,7 @@ html, body, .paint-container {
     padding: 0;
     margin: 0;
     box-sizing: border-box;
+    user-select: none;
 }
 
 /*
@@ -48,6 +49,32 @@ html, body, .paint-container {
  */
 
 .invisible {
+    visibility: hidden;
+}
+
+/*
+    action styles
+ */
+.draw-action {
+    background-color: grey;
+    border: 1px solid grey;
+    padding: 8px;
+    border-radius: 8px;
+}
+
+.draw-action:hover {
+    border: 1px solid red;
+}
+
+.draw-action:not(:last-of-type) {
+    margin-right: 16px;
+}
+
+.hidden {
+    display: none;
+}
+
+.placeholder {
     visibility: hidden;
 }
 
