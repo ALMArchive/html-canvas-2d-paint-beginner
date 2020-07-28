@@ -358,7 +358,7 @@ actionOptionMap.set(eraserActionElem, {
 
 actionOptionMap.set(clearareaActionElem, {
     elem: null,
-    action: null
+    action: clearareaAction
 });
 
 actionOptionMap.set(lineActionElem, {
