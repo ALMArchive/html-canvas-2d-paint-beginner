@@ -410,14 +410,6 @@ function unhideElement(elem) {
     elem.classList.remove('hidden');
 }
 
-function hidePlaceholder() {
-    hideElement(placeholder);
-}
-
-function unhidePlaceholder() {
-    unhideElement(placeholder);
-}
-
 function hideAllOptions() {
     allOptionElems.forEach(e => hideElement(e));
     unhideElement(placeholder);
