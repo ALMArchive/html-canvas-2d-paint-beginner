@@ -363,7 +363,7 @@ actionOptionMap.set(clearareaActionElem, {
 
 actionOptionMap.set(lineActionElem, {
     elem: lineOptionsElem,
-    action: clearareaAction
+    action: lineAction
 });
 
 actionOptionMap.set(ellipseActionElem, {
