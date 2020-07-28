@@ -424,7 +424,7 @@ function hideAllOptions() {
 
 function revealOption(option) {
     hideAllOptions();
-    hidePlaceholder();
+    hideElement(placeholder);
     unhideElement(option);
 }
 
@@ -650,6 +650,10 @@ if (canvasElement.getContext) {
             throw 'Invalid id, should be red, green or blue';
         }
         setColorViewerBackgroundFromSliderValues();
+        setColorDisplayBackgroundFromSliderValues();
+        setFillStyle(canvasRenderingContext, sliderValues.r, sliderValues.g, sliderValues.b, 1);
+        setStrokeStyle(canvasRenderingContext, sliderValues.r, sliderValues.g, sliderValues.b, 1);
+
         e.addEventListener('input', (e) => {
             updateSliderValuesFromInputEvent(e);
             setColorViewerBackgroundFromSliderValues();
