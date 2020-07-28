@@ -210,6 +210,32 @@ colorPickerDisplay.addEventListener('click', (e) => {
 });
 
 /*
+    actions code
+ */
+
+const placeholder = document.getElementById('placeholder');
+
+const rectOptionsElem = document.getElementById('rect-options');
+const brushOptionsElem = document.getElementById('brush-options');
+const lineOptionsElem = document.getElementById('line-options');
+const ellipseOptionsElem = document.getElementById('ellipse-options');
+const arcOptionsElem = document.getElementById('arc-options');
+const circleOptionsElem = document.getElementById('circle-options');
+const allOptionElems = [rectOptionsElem, brushOptionsElem, lineOptionsElem, ellipseOptionsElem, arcOptionsElem, circleOptionsElem];
+
+const rectActionElem = document.getElementById('rect-action');
+const pencilActionElem = document.getElementById('pencil-action');
+const brushActionElem = document.getElementById('brush-action');
+const eraserActionElem = document.getElementById('eraser-action');
+const clearareaActionElem = document.getElementById('cleararea-action');
+const lineActionElem = document.getElementById('line-action');
+const ellipseActionElem = document.getElementById('ellipse-action');
+const arcActionElem = document.getElementById('arc-action');
+const circleActionElem = document.getElementById('circle-action');
+
+
+
+/*
     Application Code
  */
 
