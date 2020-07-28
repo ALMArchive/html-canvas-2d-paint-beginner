@@ -418,7 +418,8 @@ function unhidePlaceholder() {
 
 function hideAllOptions() {
     allOptionElems.forEach(e => hideElement(e));
-    unhidePlaceholder();
+    unhideElement(placeholder);
+    unhideElement(placeholder2)
 }
 
 function revealOption(option) {
