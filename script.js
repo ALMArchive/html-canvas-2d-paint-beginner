@@ -149,25 +149,6 @@ const sliderValues = {
 };
 
 const sliders = Array.from(document.getElementsByClassName('color-slider'));
-sliders.map(e => {
-    const id = e.id;
-    if(id === 'red') {
-        e.value = sliderValues.r;
-    } else if(id === 'green') {
-        e.value = sliderValues.g;
-        sliderValues.g = e.value;
-    } else if(id === 'blue') {
-        e.value = sliderValues.b;
-    } else {
-        throw 'Invalid id, should be red, green or blue';
-    }
-    setColorViewerBackgroundFromSliderValues();
-    e.addEventListener('input', (e) => {
-        updateSliderValuesFromInputEvent(e);
-        setColorViewerBackgroundFromSliderValues();
-        setColorDisplayBackgroundFromSliderValues();
-    });
-});
 
 function setElementBackgroundColor(elem, r, g, b) {
     elem.style.backgroundColor = `rgb(${r}, ${g}, ${b})`;
@@ -607,4 +588,26 @@ if (canvasElement.getContext) {
 
     drawLine(canvasRenderingContext, 0, 0, width, height);
     drawLine(canvasRenderingContext, width, 0, 0, height, 20);
+
+    sliders.map(e => {
+        const id = e.id;
+        if(id === 'red') {
+            e.value = sliderValues.r;
+        } else if(id === 'green') {
+            e.value = sliderValues.g;
+            sliderValues.g = e.value;
+        } else if(id === 'blue') {
+            e.value = sliderValues.b;
+        } else {
+            throw 'Invalid id, should be red, green or blue';
+        }
+        setColorViewerBackgroundFromSliderValues();
+        e.addEventListener('input', (e) => {
+            updateSliderValuesFromInputEvent(e);
+            setColorViewerBackgroundFromSliderValues();
+            setColorDisplayBackgroundFromSliderValues();
+            setFillStyle(canvasRenderingContext, sliderValues.r, sliderValues.g, sliderValues.b, 1);
+            setStrokeStyle(canvasRenderingContext, sliderValues.r, sliderValues.g, sliderValues.b, 1);
+        });
+    });
 }
