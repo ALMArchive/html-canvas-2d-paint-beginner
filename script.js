@@ -319,7 +319,7 @@ const arcAction = {
     type: ACTION_TYPES.CLICK,
     radius: 100,
     startAngle: 0,
-    endAngle: Math.PI,
+    endAngle: 180,
     action: function(canvasRenderingContext, filled, x, y) {
         const method = filled ? fillArc : strokeArc;
         method(canvasRenderingContext, x, y, this.radius, this.startAngle, this.endAngle);
