@@ -214,6 +214,7 @@ colorPickerDisplay.addEventListener('click', (e) => {
  */
 
 const placeholder = document.getElementById('placeholder');
+const placeholder2 = document.getElementById('placeholder2');
 
 const rectOptionsElem = document.getElementById('rect-options');
 const brushOptionsElem = document.getElementById('brush-options');
@@ -221,7 +222,8 @@ const lineOptionsElem = document.getElementById('line-options');
 const ellipseOptionsElem = document.getElementById('ellipse-options');
 const arcOptionsElem = document.getElementById('arc-options');
 const circleOptionsElem = document.getElementById('circle-options');
-const allOptionElems = [rectOptionsElem, brushOptionsElem, lineOptionsElem, ellipseOptionsElem, arcOptionsElem, circleOptionsElem];
+const strokeOptionsElem = document.getElementById('fill-options');
+const allOptionElems = [rectOptionsElem, brushOptionsElem, lineOptionsElem, ellipseOptionsElem, arcOptionsElem, circleOptionsElem, strokeOptionsElem];
 
 const rectActionElem = document.getElementById('rect-action');
 const pencilActionElem = document.getElementById('pencil-action');
@@ -333,6 +335,18 @@ const circleAction = {
         method(ctx, x, y, this.radius);
     }
 };
+
+const actions = {
+    rect: rectAction,
+    pencil: pencilAction,
+    brush: brushAction,
+    eraser: eraserAction,
+    cleararea: clearareaAction,
+    line: lineAction,
+    ellipse: ellipseAction,
+    arc: arcAction,
+    circle: circleAction
+}
 
 const actionOptionMap = new Map();
 
