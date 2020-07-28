@@ -381,6 +381,33 @@ actionOptionMap.set(circleActionElem, {
     action: circleAction
 });
 
+function hideElement(elem) {
+    elem.classList.add('hidden');
+}
+
+function unhideElement(elem) {
+    elem.classList.remove('hidden');
+}
+
+function hidePlaceholder() {
+    hideElement(placeholder);
+}
+
+function unhidePlaceholder() {
+    unhideElement(placeholder);
+}
+
+function hideAllOptions() {
+    allOptionElems.forEach(e => hideElement(e));
+    unhidePlaceholder();
+}
+
+function revealOption(option) {
+    hideAllOptions();
+    hidePlaceholder();
+    unhideElement(option);
+}
+
 /*
     Application Code
  */
