@@ -86,7 +86,6 @@ html, body, .paint-container {
     --color-picker-display-dim: 64px;
     width: var(--color-picker-display-dim);
     height: var(--color-picker-display-dim);
-    background-color: white;
     border: 1px solid black;
 }
 
