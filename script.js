@@ -422,6 +422,105 @@ function revealOption(option) {
     unhideElement(option);
 }
 
+let currentActionInfo = null;
+let filled = false;
+
+const fillActionElem = document.getElementById('fill-action');
+fillActionElem.addEventListener('click', () => filled = true);
+const strokeActionElem = document.getElementById('stroke-action');
+strokeActionElem.addEventListener('click', () => filled = false);
+
+function setupSingleClickListener(ctx, action) {
+    const newListener = (e) => {
+        const x = e.offsetX;
+        const y = e.offsetY;
+        const boundAction = action.action.bind(action);
+        boundAction(ctx, filled, x, y);
+    }
+
+    currentActionInfo = {
+        type: ACTION_TYPES.CLICK,
+        mousedown: newListener
+    };
+
+    canvasElement.addEventListener('mousedown', newListener, false);
+}
+
+function setupDragClickListener(ctx, action) {
+    let mouseDown = false;
+
+    let mouseupListener = () => mouseDown = false;
+    let mouseMoveListener = (action) => {
+        const boundAction = action.action.bind(action)
+        return (e) => {
+            const x = e.offsetX;
+            const y = e.offsetY;
+            if(mouseDown) {
+                boundAction(ctx, x, y);
+            }
+        }
+    }
+
+    const boundListener = mouseMoveListener(action);
+
+    let mousedownListener = (e) => {
+        mouseDown = true;
+        boundListener(e);
+    }
+
+    canvasElement.addEventListener('mousedown', mousedownListener);
+    canvasElement.addEventListener('mouseup', mouseupListener);
+    canvasElement.addEventListener('mousemove', boundListener);
+
+
+    currentActionInfo = {
+        type: ACTION_TYPES.DRAG,
+        mousedown: mousedownListener,
+        mouseup: mouseupListener,
+        mousemove: boundListener
+    };
+}
+
+function setupUpDownClickListener(ctx, action) {
+    let startPoint = {
+        x: 0, y: 0
+    };
+
+    let endPoint = {
+        x: 0, y: 0
+    };
+
+    let mouseDownListener = (e) => startPoint = { x: e.offsetX, y: e.offsetY };
+    let mouseUpListener = (action) => {
+        const boundAction = action.action.bind(action);
+        return (e) => {
+            endPoint = {x: e.offsetX, y: e.offsetY};
+            boundAction(ctx, startPoint, endPoint);
+        }
+    }
+    const boundListener = mouseUpListener(action);
+    canvasElement.addEventListener('mousedown', mouseDownListener);
+    canvasElement.addEventListener('mouseup', boundListener);
+
+    currentActionInfo = {
+        type: ACTION_TYPES.UPDOWN,
+        mousedown: mouseDownListener,
+        mouseup: boundListener
+    };
+}
+
+function setupActionListener(ctx, action) {
+    if(action.type === ACTION_TYPES.CLICK) {
+        setupSingleClickListener(ctx, action);
+    } else if(action.type === ACTION_TYPES.DRAG) {
+        setupDragClickListener(ctx, action);
+    } else if(action.type === ACTION_TYPES.UPDOWN) {
+        setupUpDownClickListener(ctx, action);
+    } else {
+        throw 'Invalid Action Type';
+    }
+}
+
 /*
     Application Code
  */
