@@ -122,8 +122,10 @@ function drawLine(canvasRenderingContext, x1, y1, x2, y2, width = 1) {
     canvasRenderingContext.beginPath();
     canvasRenderingContext.moveTo(x1, y1);
     canvasRenderingContext.lineTo(x2, y2);
+    const originalWidth = canvasRenderingContext.lineWidth;
     canvasRenderingContext.lineWidth = width;
     canvasRenderingContext.stroke();
+    canvasRenderingContext.lineWidth = originalWidth;
 }
 
 /*
@@ -254,7 +256,7 @@ const rectAction = {
     type: ACTION_TYPES.CLICK,
     action: function(ctx, filled, x, y) {
         let method = filled ? fillRect : strokeRect;
-        method(ctx, x - this.w / 2, y - this.h / 2, this.w, this.h);
+        method(ctx, x - this.width / 2, y - this.height / 2, this.width, this.height);
     }
 };
 
