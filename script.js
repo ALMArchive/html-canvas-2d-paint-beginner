@@ -521,6 +521,37 @@ function setupActionListener(ctx, action) {
     }
 }
 
+function breakdownActionListener() {
+    if(currentActionInfo === null) return;
+    if(currentActionInfo.type === ACTION_TYPES.CLICK) {
+        breakdownSingleClickListener();
+    } else if(currentActionInfo.type === ACTION_TYPES.DRAG) {
+        breakdownDragClickListener();
+    } else if(currentActionInfo.type === ACTION_TYPES.UPDOWN) {
+        breakdownUpDownClickListener();
+    } else {
+        throw 'Invalid Action Type';
+    }
+}
+
+function breakdownSingleClickListener() {
+    if(currentActionInfo === null || currentActionInfo.type !== ACTION_TYPES.CLICK);
+    canvasElement.removeEventListener('mousedown', currentActionInfo.mousedown);
+}
+
+function breakdownDragClickListener() {
+    if(currentActionInfo === null || currentActionInfo.type !== ACTION_TYPES.DRAG);
+    canvasElement.removeEventListener('mousedown', currentActionInfo.mousedown);
+    canvasElement.removeEventListener('mouseup', currentActionInfo.mouseup);
+    canvasElement.removeEventListener('mousemove', currentActionInfo.mousemove);
+}
+
+function breakdownUpDownClickListener() {
+    if(currentActionInfo === null || currentActionInfo.type !== ACTION_TYPES.UPDOWN);
+    canvasElement.removeEventListener('mousedown', currentActionInfo.mousedown);
+    canvasElement.removeEventListener('mouseup', currentActionInfo.mouseup);
+}
+
 /*
     Application Code
  */
