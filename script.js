@@ -216,6 +216,32 @@ const ellipseActionElem = document.getElementById('ellipse-action');
 const arcActionElem = document.getElementById('arc-action');
 const circleActionElem = document.getElementById('circle-action');
 
+const toolbarElem = document.getElementById('toolbar');
+toolbarElem.addEventListener('input', (e) => {
+    const target = e.target;
+    const value = target.value;
+    if(value === '') {
+        target.style.backgroundColor = 'white';
+        return;
+    }
+    const parse = parseInt(value);
+    const [type, param] = target.name.split('-');
+    if(type === 'brush' && param === 'brushType') {
+        actions[type][param] = value;
+        return;
+    }
+    if(isNaN(parse)) {
+        target.style.backgroundColor = 'red';
+        return;
+    }
+    if(actions[type] !== null) {
+        if(actions[type][param] !== null) {
+            actions[type][param] = parse;
+        }
+    }
+    target.style.backgroundColor = 'white';
+});
+
 const ACTION_TYPES = {
     CLICK: 'CLICK',
     DRAG: 'DRAG',
