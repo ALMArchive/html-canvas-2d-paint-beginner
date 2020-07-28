@@ -334,6 +334,53 @@ const circleAction = {
     }
 };
 
+const actionOptionMap = new Map();
+
+actionOptionMap.set(rectActionElem, {
+    elem: rectOptionsElem,
+    action: rectAction
+});
+
+actionOptionMap.set(pencilActionElem, {
+    elem: null,
+    action: pencilAction
+});
+
+actionOptionMap.set(brushActionElem, {
+    elem: brushOptionsElem,
+    action: brushAction
+});
+
+actionOptionMap.set(eraserActionElem, {
+    elem: null,
+    action: eraserAction
+});
+
+actionOptionMap.set(clearareaActionElem, {
+    elem: null,
+    action: null
+});
+
+actionOptionMap.set(lineActionElem, {
+    elem: lineOptionsElem,
+    action: clearareaAction
+});
+
+actionOptionMap.set(ellipseActionElem, {
+    elem: ellipseOptionsElem,
+    action: ellipseAction
+});
+
+actionOptionMap.set(arcActionElem, {
+    elem: arcOptionsElem,
+    action: arcAction
+});
+
+actionOptionMap.set(circleActionElem, {
+    elem: circleOptionsElem,
+    action: circleAction
+});
+
 /*
     Application Code
  */
