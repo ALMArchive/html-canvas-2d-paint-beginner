@@ -144,6 +144,7 @@ function makeElementInvisible(elem) {
     elem.classList.add('invisible');
 }
 
+// hold current slider r/g/b values
 const sliderValues = {
     r: 255,
     g: 255,
@@ -152,26 +153,32 @@ const sliderValues = {
 
 const sliders = Array.from(document.getElementsByClassName('color-slider'));
 
+// set element color background style helper
 function setElementBackgroundColor(elem, r, g, b) {
     elem.style.backgroundColor = `rgb(${r}, ${g}, ${b})`;
 }
 
+// set colorViewer background from r, g, b
 function setColorViewerBackground(r, g, b) {
     setElementBackgroundColor(colorViewer, r, g, b);
 }
 
+// set colorViewer from sliderValues
 function setColorViewerBackgroundFromSliderValues() {
     setColorViewerBackground(sliderValues.r, sliderValues.g, sliderValues.b);
 }
 
+// set colorDisplay background from r, g, b
 function setColorDisplayBackground(r, g, b) {
     setElementBackgroundColor(colorPickerDisplay, r, g, b);
 }
 
+// set colorDisplay from sliderValues
 function setColorDisplayBackgroundFromSliderValues() {
     setColorDisplayBackground(sliderValues.r, sliderValues.g, sliderValues.b);
 }
 
+// event listener callback to update sliderValues object from sliders
 function updateSliderValuesFromInputEvent(e) {
     const target = e.currentTarget;
     const id = target.id;
@@ -186,7 +193,10 @@ function updateSliderValuesFromInputEvent(e) {
     }
 }
 
+// hide the colorPicker when anything other than color display is clicked
 window.document.body.addEventListener('click', () => makeElementInvisible(colorPickerPanel));
+
+// add listener to colorPicker to reveal colorPickerPanel upon click
 colorPickerDisplay.addEventListener('click', (e) => {
     makeElementVisible(colorPickerPanel);
     e.stopPropagation();
@@ -218,37 +228,17 @@ const ellipseActionElem = document.getElementById('ellipse-action');
 const arcActionElem = document.getElementById('arc-action');
 const circleActionElem = document.getElementById('circle-action');
 
-const toolbarElem = document.getElementById('toolbar');
-toolbarElem.addEventListener('input', (e) => {
-    const target = e.target;
-    const value = target.value;
-    if(value === '') {
-        target.style.backgroundColor = 'white';
-        return;
-    }
-    const parse = parseInt(value);
-    const [type, param] = target.name.split('-');
-    if(type === 'brush' && param === 'brushType') {
-        actions[type][param] = value;
-        return;
-    }
-    if(isNaN(parse)) {
-        target.style.backgroundColor = 'red';
-        return;
-    }
-    if(actions[type] !== null) {
-        if(actions[type][param] !== null) {
-            actions[type][param] = parse;
-        }
-    }
-    target.style.backgroundColor = 'white';
-});
-
+// types of actions
 const ACTION_TYPES = {
     CLICK: 'CLICK',
     DRAG: 'DRAG',
     UPDOWN: 'UPDOWN'
 }
+
+/*
+   action objects holding necessary information to initialize and use each of the actions
+   actions: rect, pencil, brush, eraser, cleararea, line, ellipse, arc, circle
+ */
 
 const rectAction = {
     width: 25,
@@ -265,6 +255,8 @@ const pencilAction = {
     action: function(canvasRenderingContext, x, y) { drawPixel(canvasRenderingContext, x, y); }
 };
 
+
+// type of brush currently selected
 const BRUSH_TYPE = {
     CIRCLE: 'CIRCLE',
     RECT: 'RECT'
@@ -343,6 +335,9 @@ const circleAction = {
     }
 };
 
+
+// actions object holds all of the individual action objects so they can be accessed progamatically
+// inside of the toolbar event delegation listener
 const actions = {
     rect: rectAction,
     pencil: pencilAction,
@@ -355,6 +350,35 @@ const actions = {
     circle: circleAction
 }
 
+// set toolbar event delegation listener to automatically update actions from input values
+const toolbarElem = document.getElementById('toolbar');
+toolbarElem.addEventListener('input', (e) => {
+    const target = e.target;
+    const value = target.value;
+    if(value === '') {
+        target.style.backgroundColor = 'white';
+        return;
+    }
+    const parse = parseInt(value);
+    const [type, param] = target.name.split('-');
+    if(type === 'brush' && param === 'brushType') {
+        actions[type][param] = value;
+        return;
+    }
+    if(isNaN(parse)) {
+        target.style.backgroundColor = 'red';
+        return;
+    }
+    if(actions[type] !== null) {
+        if(actions[type][param] !== null) {
+            actions[type][param] = parse;
+        }
+    }
+    target.style.backgroundColor = 'white';
+});
+
+// Actions map that maps an action element to it's associated option element, if there is one, and to its action object
+// used for programatic initialization
 const actionOptionMap = new Map();
 
 actionOptionMap.set(rectActionElem, {
@@ -402,6 +426,9 @@ actionOptionMap.set(circleActionElem, {
     action: circleAction
 });
 
+/*
+    action element helper methods
+ */
 function hideElement(elem) {
     elem.classList.add('hidden');
 }
@@ -422,14 +449,19 @@ function revealOption(option) {
     unhideElement(option);
 }
 
+// currently selected action information object, used to breakdown listeners
 let currentActionInfo = null;
+
+// whether we are using filled or stroke for actions where that's relevant
 let filled = false;
 
+// set listeners on fillAction/strokeAction to set the filled flag
 const fillActionElem = document.getElementById('fill-action');
 fillActionElem.addEventListener('click', () => filled = true);
 const strokeActionElem = document.getElementById('stroke-action');
 strokeActionElem.addEventListener('click', () => filled = false);
 
+// set up listener for single click actions
 function setupSingleClickListener(canvasRenderingContext, action) {
     const newListener = (e) => {
         const x = e.offsetX;
@@ -446,6 +478,7 @@ function setupSingleClickListener(canvasRenderingContext, action) {
     canvasElement.addEventListener('mousedown', newListener, false);
 }
 
+// set up listener for click and drag actions
 function setupDragClickListener(canvasRenderingContext, action) {
     let mouseDown = false;
 
@@ -481,6 +514,7 @@ function setupDragClickListener(canvasRenderingContext, action) {
     };
 }
 
+// set up listener for click down and release actions
 function setupUpDownClickListener(canvasRenderingContext, action) {
     let startPoint = {
         x: 0, y: 0
@@ -509,6 +543,7 @@ function setupUpDownClickListener(canvasRenderingContext, action) {
     };
 }
 
+// initialize action helper function
 function initializeAction(canvasRenderingContext, action) {
     const actionElement = action[0];
     const actionValue = action[1];
@@ -528,6 +563,7 @@ function initializeAction(canvasRenderingContext, action) {
     });
 }
 
+// set up action listener helper function that delegates to the specific action subtype initializer
 function setupActionListener(canvasRenderingContext, action) {
     if(action.type === ACTION_TYPES.CLICK) {
         setupSingleClickListener(canvasRenderingContext, action);
@@ -540,6 +576,28 @@ function setupActionListener(canvasRenderingContext, action) {
     }
 }
 
+// breakdown listener for single click actions
+function breakdownSingleClickListener() {
+    if(currentActionInfo === null || currentActionInfo.type !== ACTION_TYPES.CLICK);
+    canvasElement.removeEventListener('mousedown', currentActionInfo.mousedown);
+}
+
+// breakdown listener for click and drag actions
+function breakdownDragClickListener() {
+    if(currentActionInfo === null || currentActionInfo.type !== ACTION_TYPES.DRAG);
+    canvasElement.removeEventListener('mousedown', currentActionInfo.mousedown);
+    canvasElement.removeEventListener('mouseup', currentActionInfo.mouseup);
+    canvasElement.removeEventListener('mousemove', currentActionInfo.mousemove);
+}
+
+// breakdown listener for click and release actions
+function breakdownUpDownClickListener() {
+    if(currentActionInfo === null || currentActionInfo.type !== ACTION_TYPES.UPDOWN);
+    canvasElement.removeEventListener('mousedown', currentActionInfo.mousedown);
+    canvasElement.removeEventListener('mouseup', currentActionInfo.mouseup);
+}
+
+// breakdown action listener helper function that delegates to the specific action subtype breakdown
 function breakdownActionListener() {
     if(currentActionInfo === null) return;
     if(currentActionInfo.type === ACTION_TYPES.CLICK) {
@@ -551,24 +609,6 @@ function breakdownActionListener() {
     } else {
         throw 'Invalid Action Type';
     }
-}
-
-function breakdownSingleClickListener() {
-    if(currentActionInfo === null || currentActionInfo.type !== ACTION_TYPES.CLICK);
-    canvasElement.removeEventListener('mousedown', currentActionInfo.mousedown);
-}
-
-function breakdownDragClickListener() {
-    if(currentActionInfo === null || currentActionInfo.type !== ACTION_TYPES.DRAG);
-    canvasElement.removeEventListener('mousedown', currentActionInfo.mousedown);
-    canvasElement.removeEventListener('mouseup', currentActionInfo.mouseup);
-    canvasElement.removeEventListener('mousemove', currentActionInfo.mousemove);
-}
-
-function breakdownUpDownClickListener() {
-    if(currentActionInfo === null || currentActionInfo.type !== ACTION_TYPES.UPDOWN);
-    canvasElement.removeEventListener('mousedown', currentActionInfo.mousedown);
-    canvasElement.removeEventListener('mouseup', currentActionInfo.mouseup);
 }
 
 /*
@@ -587,49 +627,12 @@ const height = pixelStringToNumber(window.getComputedStyle(canvasElement).height
 // resize the canvas drawing surface to the elements computed size
 resizeCanvas(canvasElement, width, height);
 
-
 if (canvasElement.getContext) {
     const canvasRenderingContext = canvasElement.getContext('2d');
 
     for(const action of actionOptionMap) {
         initializeAction(canvasRenderingContext, action);
     }
-
-    setFillStyle(canvasRenderingContext, 200, 0, 0);
-    fillRect(canvasRenderingContext,10, 10, 50, 50);
-
-    setFillStyle(canvasRenderingContext, 0, 0, 200, 0.5);
-    fillRect(canvasRenderingContext,30, 30, 50, 50);
-
-    drawPixel(canvasRenderingContext, 500, 500);
-
-    for(let i = 0; i < width; i += 5) {
-        for(let j = 0; j < height; j += 5) {
-            drawPixel(canvasRenderingContext, i, j);
-        }
-    }
-
-    setStrokeStyle(canvasRenderingContext, 255, 0 , 0);
-    strokeRect(canvasRenderingContext, 500, 500, 50, 50);
-    clearRect(canvasRenderingContext, 100, 300, 250, 400);
-
-    for(let i = width / 2; i < width; i += 15) {
-        for(let j = 0; j < height; j += 5) {
-            clearPixel(canvasRenderingContext, i, j);
-        }
-    }
-
-    fillEllipse(canvasRenderingContext, 300, 300, 100, 300, 100, 0, 360);
-    strokeEllipse(canvasRenderingContext, 500, 300, 300, 100, 100, 0, 360);
-
-    fillArc(canvasRenderingContext, 500, 600, 20, 0, 360);
-    strokeArc(canvasRenderingContext, 500, 600, 20, 180, 0);
-
-    fillCircle(canvasRenderingContext, 400, 400, 10);
-    strokeCircle(canvasRenderingContext, 400, 400, 10);
-
-    drawLine(canvasRenderingContext, 0, 0, width, height);
-    drawLine(canvasRenderingContext, width, 0, 0, height, 20);
 
     sliders.map(e => {
         const id = e.id;
