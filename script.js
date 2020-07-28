@@ -351,47 +351,47 @@ const actions = {
 const actionOptionMap = new Map();
 
 actionOptionMap.set(rectActionElem, {
-    elem: rectOptionsElem,
+    optionsElem: rectOptionsElem,
     action: rectAction
 });
 
 actionOptionMap.set(pencilActionElem, {
-    elem: null,
+    optionsElem: null,
     action: pencilAction
 });
 
 actionOptionMap.set(brushActionElem, {
-    elem: brushOptionsElem,
+    optionsElem: brushOptionsElem,
     action: brushAction
 });
 
 actionOptionMap.set(eraserActionElem, {
-    elem: null,
+    optionsElem: null,
     action: eraserAction
 });
 
 actionOptionMap.set(clearareaActionElem, {
-    elem: null,
+    optionsElem: null,
     action: clearareaAction
 });
 
 actionOptionMap.set(lineActionElem, {
-    elem: lineOptionsElem,
+    optionsElem: lineOptionsElem,
     action: lineAction
 });
 
 actionOptionMap.set(ellipseActionElem, {
-    elem: ellipseOptionsElem,
+    optionsElem: ellipseOptionsElem,
     action: ellipseAction
 });
 
 actionOptionMap.set(arcActionElem, {
-    elem: arcOptionsElem,
+    optionsElem: arcOptionsElem,
     action: arcAction
 });
 
 actionOptionMap.set(circleActionElem, {
-    elem: circleOptionsElem,
+    optionsElem: circleOptionsElem,
     action: circleAction
 });
 
