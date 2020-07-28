@@ -273,12 +273,10 @@ const brushAction = {
     size: 25,
     brushType: BRUSH_TYPE.CIRCLE,
     action: function(ctx, x, y) {
-        const adjustedX = x - this.size / 2;
-        const adjustedY = y - this.size / 2;
         if(this.brushType === BRUSH_TYPE.CIRCLE) {
-            fillCircle(ctx, adjustedX, adjustedY, this.size / 2);
+            fillCircle(ctx, x, y, this.size);
         } else if(this.brushType === BRUSH_TYPE.RECT) {
-            fillRect(ctx, adjustedX, adjustedY, this.size, this.size);
+            fillRect(ctx, x - this.size / 2, y - this.size / 2, this.size, this.size);
         } else {
             throw 'Invalid Brush Type Selected';
         }
