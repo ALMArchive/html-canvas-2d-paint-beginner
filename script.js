@@ -233,7 +233,106 @@ const ellipseActionElem = document.getElementById('ellipse-action');
 const arcActionElem = document.getElementById('arc-action');
 const circleActionElem = document.getElementById('circle-action');
 
+const ACTION_TYPES = {
+    CLICK: 'CLICK',
+    DRAG: 'DRAG',
+    UPDOWN: 'UPDOWN'
+}
 
+const rectAction = {
+    width: 25,
+    height: 25,
+    type: ACTION_TYPES.CLICK,
+    action: function(ctx, filled, x, y) {
+        let method = filled ? fillRect : strokeRect;
+        method(ctx, x - this.w / 2, y - this.h / 2, this.w, this.h);
+    }
+};
+
+const pencilAction = {
+    type: ACTION_TYPES.DRAG,
+    action: function(ctx, x, y) { drawPixel(ctx, x, y); }
+};
+
+const BRUSH_TYPE = {
+    CIRCLE: 'CIRCLE',
+    RECT: 'RECT'
+}
+
+const brushAction = {
+    type: ACTION_TYPES.DRAG,
+    size: 25,
+    brushType: BRUSH_TYPE.CIRCLE,
+    action: function(ctx, x, y) {
+        const adjustedX = x - this.size / 2;
+        const adjustedY = y - this.size / 2;
+        if(this.brushType === BRUSH_TYPE.CIRCLE) {
+            fillCircle(ctx, adjustedX, adjustedY, this.size / 2);
+        } else if(this.brushType === BRUSH_TYPE.RECT) {
+            fillRect(ctx, adjustedX, adjustedY, this.size, this.size);
+        } else {
+            throw 'Invalid Brush Type Selected';
+        }
+    }
+};
+
+const eraserAction = {
+    type: ACTION_TYPES.DRAG,
+    action: function(ctx, x, y) { clearPixel(ctx, x, y); }
+};
+
+const clearareaAction = {
+    type: ACTION_TYPES.UPDOWN,
+    action: function(ctx, point1, point2) {
+        if(point1.x === point2.x || point1.y === point2.y) return;
+        const minX = point1.x < point2.x ? point1.x : point2.x;
+        const minY = point1.y < point2.y ? point1.y : point2.y;
+        const width = Math.abs(point1.x - point2.x);
+        const height = Math.abs(point1.y - point2.y);
+        clearRect(ctx, minX, minY, width, height);
+    }
+};
+
+const lineAction = {
+    width: 1,
+    type: ACTION_TYPES.UPDOWN,
+    action: function(ctx, point1, point2) {
+        drawLine(ctx, point1.x, point1.y, point2.x, point2.y, this.width);
+    }
+};
+
+const ellipseAction = {
+    type: ACTION_TYPES.CLICK,
+    xradius: 100,
+    yradius: 200,
+    rotation: 0,
+    startAngle: 0,
+    endAngle: 2 * Math.PI,
+    action: function(ctx, filled, x, y) {
+        const method = filled ? fillEllipse : strokeEllipse;
+        method(ctx, x, y, this.xradius, this.yradius, this.rotation, this.startAngle, this.endAngle);
+    }
+};
+
+const arcAction = {
+    type: ACTION_TYPES.CLICK,
+    radius: 100,
+    startAngle: 0,
+    endAngle: Math.PI,
+    action: function(ctx, filled, x, y) {
+        const method = filled ? fillArc : strokeArc;
+        method(ctx, x, y, this.radius, this.startAngle, this.endAngle);
+    }
+};
+
+const circleAction = {
+    type: ACTION_TYPES.CLICK,
+    radius: 100,
+    action: function(ctx, filled, x, y) {
+        const method = filled ? fillCircle : strokeCircle;
+        method(ctx, x, y, this.radius);
+    }
+};
 
 /*
     Application Code
