@@ -490,6 +490,25 @@ function setupUpDownClickListener(ctx, action) {
     };
 }
 
+function initializeAction(ctx, action) {
+    const actionElement = action[0];
+    const actionValue = action[1];
+    const optionsElement = actionValue.optionsElem;
+    const act = actionValue.action;
+    actionElement.addEventListener('click', () => {
+        breakdownActionListener();
+        setupActionListener(ctx, act);
+        let cb;
+        if(optionsElement !== null) cb = () => revealOption(optionsElement);
+        else cb = () => hideAllOptions();
+        cb();
+        if(act.type === ACTION_TYPES.CLICK) {
+            hideElement(placeholder2);
+            unhideElement(strokeOptionsElem);
+        }
+    });
+}
+
 function setupActionListener(ctx, action) {
     if(action.type === ACTION_TYPES.CLICK) {
         setupSingleClickListener(ctx, action);
@@ -552,6 +571,10 @@ resizeCanvas(canvasElement, width, height);
 
 if (canvasElement.getContext) {
     const canvasRenderingContext = canvasElement.getContext('2d');
+
+    for(const action of actionOptionMap) {
+        initializeAction(canvasRenderingContext, action);
+    }
 
     setFillStyle(canvasRenderingContext, 200, 0, 0);
     fillRect(canvasRenderingContext,10, 10, 50, 50);
