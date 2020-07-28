@@ -254,15 +254,15 @@ const rectAction = {
     width: 25,
     height: 25,
     type: ACTION_TYPES.CLICK,
-    action: function(ctx, filled, x, y) {
+    action: function(canvasRenderingContext, filled, x, y) {
         let method = filled ? fillRect : strokeRect;
-        method(ctx, x - this.width / 2, y - this.height / 2, this.width, this.height);
+        method(canvasRenderingContext, x - this.width / 2, y - this.height / 2, this.width, this.height);
     }
 };
 
 const pencilAction = {
     type: ACTION_TYPES.DRAG,
-    action: function(ctx, x, y) { drawPixel(ctx, x, y); }
+    action: function(canvasRenderingContext, x, y) { drawPixel(canvasRenderingContext, x, y); }
 };
 
 const BRUSH_TYPE = {
@@ -274,11 +274,11 @@ const brushAction = {
     type: ACTION_TYPES.DRAG,
     size: 25,
     brushType: BRUSH_TYPE.CIRCLE,
-    action: function(ctx, x, y) {
+    action: function(canvasRenderingContext, x, y) {
         if(this.brushType === BRUSH_TYPE.CIRCLE) {
-            fillCircle(ctx, x, y, this.size);
+            fillCircle(canvasRenderingContext, x, y, this.size);
         } else if(this.brushType === BRUSH_TYPE.RECT) {
-            fillRect(ctx, x - this.size / 2, y - this.size / 2, this.size, this.size);
+            fillRect(canvasRenderingContext, x - this.size / 2, y - this.size / 2, this.size, this.size);
         } else {
             throw 'Invalid Brush Type Selected';
         }
@@ -287,26 +287,26 @@ const brushAction = {
 
 const eraserAction = {
     type: ACTION_TYPES.DRAG,
-    action: function(ctx, x, y) { clearPixel(ctx, x, y); }
+    action: function(canvasRenderingContext, x, y) { clearPixel(canvasRenderingContext, x, y); }
 };
 
 const clearareaAction = {
     type: ACTION_TYPES.UPDOWN,
-    action: function(ctx, point1, point2) {
+    action: function(canvasRenderingContext, point1, point2) {
         if(point1.x === point2.x || point1.y === point2.y) return;
         const minX = point1.x < point2.x ? point1.x : point2.x;
         const minY = point1.y < point2.y ? point1.y : point2.y;
         const width = Math.abs(point1.x - point2.x);
         const height = Math.abs(point1.y - point2.y);
-        clearRect(ctx, minX, minY, width, height);
+        clearRect(canvasRenderingContext, minX, minY, width, height);
     }
 };
 
 const lineAction = {
     width: 1,
     type: ACTION_TYPES.UPDOWN,
-    action: function(ctx, point1, point2) {
-        drawLine(ctx, point1.x, point1.y, point2.x, point2.y, this.width);
+    action: function(canvasRenderingContext, point1, point2) {
+        drawLine(canvasRenderingContext, point1.x, point1.y, point2.x, point2.y, this.width);
     }
 };
 
@@ -317,9 +317,9 @@ const ellipseAction = {
     rotation: 0,
     startAngle: 0,
     endAngle: 2 * Math.PI,
-    action: function(ctx, filled, x, y) {
+    action: function(canvasRenderingContext, filled, x, y) {
         const method = filled ? fillEllipse : strokeEllipse;
-        method(ctx, x, y, this.xradius, this.yradius, this.rotation, this.startAngle, this.endAngle);
+        method(canvasRenderingContext, x, y, this.xradius, this.yradius, this.rotation, this.startAngle, this.endAngle);
     }
 };
 
@@ -328,18 +328,18 @@ const arcAction = {
     radius: 100,
     startAngle: 0,
     endAngle: Math.PI,
-    action: function(ctx, filled, x, y) {
+    action: function(canvasRenderingContext, filled, x, y) {
         const method = filled ? fillArc : strokeArc;
-        method(ctx, x, y, this.radius, this.startAngle, this.endAngle);
+        method(canvasRenderingContext, x, y, this.radius, this.startAngle, this.endAngle);
     }
 };
 
 const circleAction = {
     type: ACTION_TYPES.CLICK,
     radius: 100,
-    action: function(ctx, filled, x, y) {
+    action: function(canvasRenderingContext, filled, x, y) {
         const method = filled ? fillCircle : strokeCircle;
-        method(ctx, x, y, this.radius);
+        method(canvasRenderingContext, x, y, this.radius);
     }
 };
 
@@ -438,12 +438,12 @@ fillActionElem.addEventListener('click', () => filled = true);
 const strokeActionElem = document.getElementById('stroke-action');
 strokeActionElem.addEventListener('click', () => filled = false);
 
-function setupSingleClickListener(ctx, action) {
+function setupSingleClickListener(canvasRenderingContext, action) {
     const newListener = (e) => {
         const x = e.offsetX;
         const y = e.offsetY;
         const boundAction = action.action.bind(action);
-        boundAction(ctx, filled, x, y);
+        boundAction(canvasRenderingContext, filled, x, y);
     }
 
     currentActionInfo = {
@@ -454,7 +454,7 @@ function setupSingleClickListener(ctx, action) {
     canvasElement.addEventListener('mousedown', newListener, false);
 }
 
-function setupDragClickListener(ctx, action) {
+function setupDragClickListener(canvasRenderingContext, action) {
     let mouseDown = false;
 
     let mouseupListener = () => mouseDown = false;
@@ -464,7 +464,7 @@ function setupDragClickListener(ctx, action) {
             const x = e.offsetX;
             const y = e.offsetY;
             if(mouseDown) {
-                boundAction(ctx, x, y);
+                boundAction(canvasRenderingContext, x, y);
             }
         }
     }
@@ -489,7 +489,7 @@ function setupDragClickListener(ctx, action) {
     };
 }
 
-function setupUpDownClickListener(ctx, action) {
+function setupUpDownClickListener(canvasRenderingContext, action) {
     let startPoint = {
         x: 0, y: 0
     };
@@ -503,7 +503,7 @@ function setupUpDownClickListener(ctx, action) {
         const boundAction = action.action.bind(action);
         return (e) => {
             endPoint = {x: e.offsetX, y: e.offsetY};
-            boundAction(ctx, startPoint, endPoint);
+            boundAction(canvasRenderingContext, startPoint, endPoint);
         }
     }
     const boundListener = mouseUpListener(action);
@@ -517,14 +517,14 @@ function setupUpDownClickListener(ctx, action) {
     };
 }
 
-function initializeAction(ctx, action) {
+function initializeAction(canvasRenderingContext, action) {
     const actionElement = action[0];
     const actionValue = action[1];
     const optionsElement = actionValue.optionsElem;
     const act = actionValue.action;
     actionElement.addEventListener('click', () => {
         breakdownActionListener();
-        setupActionListener(ctx, act);
+        setupActionListener(canvasRenderingContext, act);
         let cb;
         if(optionsElement !== null) cb = () => revealOption(optionsElement);
         else cb = () => hideAllOptions();
@@ -536,13 +536,13 @@ function initializeAction(ctx, action) {
     });
 }
 
-function setupActionListener(ctx, action) {
+function setupActionListener(canvasRenderingContext, action) {
     if(action.type === ACTION_TYPES.CLICK) {
-        setupSingleClickListener(ctx, action);
+        setupSingleClickListener(canvasRenderingContext, action);
     } else if(action.type === ACTION_TYPES.DRAG) {
-        setupDragClickListener(ctx, action);
+        setupDragClickListener(canvasRenderingContext, action);
     } else if(action.type === ACTION_TYPES.UPDOWN) {
-        setupUpDownClickListener(ctx, action);
+        setupUpDownClickListener(canvasRenderingContext, action);
     } else {
         throw 'Invalid Action Type';
     }
